@@ -1,3 +1,17 @@
+교육 세부정보
+전체 교육 과정은 어휘 확장, 사전 교육, 교육 미세 조정의 세 부분으로 구성됩니다. 어휘 확장은 merge_tokenizers.py를 참조하세요 . 🤗transformers의 run_clm.py 와 사전 훈련 및 자가 지시 미세 조정을 위한 Stanford Alpaca 프로젝트 의 데이터 세트 처리 관련 부분을 참조하세요 .
+
+우리는 사전 훈련 및 지침 미세 조정(SFT)을 위한 스크립트를 오픈 소스로 제공했습니다.
+
+사전 훈련: scripts/training/run_clm_pt_with_peft.py , 사전 훈련 Wiki를 참조하세요.
+
+지침 미세 조정: scripts/training/run_clm_sft_with_peft.py , SFT Wiki 참조
+
+>>> 📚GitHub Wiki를 참조하세요 . <------ Hmm, so.. good
+
+
+
+
 # [Chinese-LLaMA-Alpaca-2 v3.0](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2) released long context LLMs (16K)
 
 [**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki) | [**❓提问/Issues**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/issues) | [**💬讨论/Discussions**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/discussions) | [**⚔️竞技场/Arena**](http://chinese-alpaca-arena.ymcui.com/)
