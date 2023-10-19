@@ -1,320 +1,349 @@
-# [Chinese-LLaMA-Alpaca-2 v3.0版本](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2)推出长上下文版（16K）模型
+## 교육 세부정보 [Vocab Expansion]
 
-[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki) | [**❓提问/Issues**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/issues) | [**💬讨论/Discussions**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/discussions) | [**⚔️竞技场/Arena**](http://chinese-alpaca-arena.ymcui.com/)
+전체 교육 과정은 어휘 확장, 사전 교육, 교육 미세 조정의 세 부분으로 구성됩니다. 어휘 확장은 [merge_tokenizers.py](scripts/merge_tokenizer/merge_tokenizers.py)를 참조하세요. 🤗transformers의 [run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/언어-modeling/run_clm.py) 및 [Stanford의 데이터 세트 처리 관련 부분을 참조하세요. Alpaca](https://github.com/tatsu-lab/stanford_alpaca) 사전 훈련 및 자가 지시 미세 조정을 위한 프로젝트입니다.
 
-<p align="center">
+우리는 사전 훈련 및 지침 미세 조정(SFT)을 위한 스크립트를 오픈 소스로 제공했습니다.
+
+- 사전 훈련: [scripts/training/run_clm_pt_with_peft.py](./scripts/training/run_clm_pt_with_peft.py), [사전 훈련 위키](https://github.com/ymcui/ Chinese-LLaMA-Alpaca)를 참조하세요. /wiki/사전 훈련 스크립트)
+
+- 지침 미세 조정: [scripts/training/run_clm_sft_with_peft.py](./scripts/training/run_clm_sft_with_peft.py), [SFT Wiki](https://github.com/ymcui/ Chinese-LLaMA-Alpaca/wiki/ 참조) SFT 스크립트)
+
+>>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Training-Details)를 참조하세요. <---- Vocab Expansion, 감사합니다.
+
+
+
+# [중국어-LLaMA-Alpaca-2 v3.0](https://github.com/ymcui/China-LLaMA-Alpaca-2)에서 긴 컨텍스트 LLM(16K) 출시
+
+[**🇨🇳中文**](./README.md) | [**🌐영어**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ymcui/China-LLaMA-Alpaca/wiki) | [**❓提问/이슈**](https://github.com/ymcui/China-LLaMA-Alpaca/issues) | [**💬讨论/Discussions**](https://github.com/ymcui/China-LLaMA-Alpaca/discussions) | [**⚔️竞技场/Arena**](http://chinese-alpaca-arena.ymcui.com/)
+
+<p 정렬="중앙">
     <br>
     <img src="./pics/banner.png" width="700"/>
     <br>
 </p>
-<p align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/ymcui/Chinese-LLaMA-Alpaca.svg?color=blue&style=flat-square">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/ymcui/Chinese-LLaMA-Alpaca">
-    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ymcui/Chinese-LLaMA-Alpaca">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ymcui/Chinese-LLaMA-Alpaca">
-    <a href="https://app.codacy.com/gh/ymcui/Chinese-LLaMA-Alpaca/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/1710faac5e634acaabfc26b0a778cdde"/></a>
+<p 정렬="중앙">
+    <img alt="GitHub" src="https://img.shields.io/github/license/ymcui/China-LLaMA-Alpaca.svg?color=blue&style=plat-square">
+    <img alt="GitHub 릴리스(최신 날짜별)" src="https://img.shields.io/github/v/release/ymcui/China-LLaMA-Alpaca">
+    <img alt="GitHub 상위 언어" src="https://img.shields.io/github/언어s/top/ymcui/China-LLaMA-Alpaca">
+    <img alt="GitHub 마지막 커밋" src="https://img.shields.io/github/last-commit/ymcui/China-LLaMA-Alpaca">
+    <a href="https://app.codacy.com/gh/ymcui/China-LLaMA-Alpaca/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy .com/project/badge/Grade/1710faac5e634acaabfc26b0a778cdde"/></a>
 </p>
 
 
 
-本项目开源了**中文LLaMA模型和指令精调的Alpaca大模型**，以进一步促进大模型在中文NLP社区的开放研究。这些模型**在原版LLaMA的基础上扩充了中文词表**并使用了中文数据进行二次预训练，进一步提升了中文基础语义理解能力。同时，中文Alpaca模型进一步使用了中文指令数据进行精调，显著提升了模型对指令的理解和执行能力。
+중국 NLP 커뮤니티에서 대형 모델에 대한 공개 연구를 촉진하기 위해 이 프로젝트에서는 **중국어 LLaMA 모델 및 명령 미세 조정이 포함된 Alpaca 대형 모델**을 오픈 소스로 제공했습니다. 이 모델은 원본 LLaMA를 기반으로 중국어 어휘를 확장하고 2차 사전 학습에 중국어 데이터를 사용하여 중국어 기본 의미 이해를 더욱 향상시킵니다. 또한 이 프로젝트는 중국어 LLaMA를 기반으로 한 미세 조정을 위해 중국어 명령 데이터를 사용하여 모델의 명령 이해 및 실행을 크게 향상시켰습니다.
 
-**技术报告（V2）**：[[Cui, Yang, and Yao] Efficient and Effective Text Encoding for Chinese LLaMA and Alpaca](https://arxiv.org/abs/2304.08177)
+**기술 보고서(V2)**:[[Cui, Yang, and Yao, 2023] 중국어 LLaMA 및 Alpaca를 위한 효율적이고 효과적인 텍스트 인코딩](https://arxiv.org/abs/2304.08177)
 
-**本项目主要内容：**
+**이 프로젝트의 주요 내용:**
 
-- 🚀 针对原版LLaMA模型扩充了中文词表，提升了中文编解码效率 
-- 🚀 开源了使用中文文本数据预训练的中文LLaMA以及经过指令精调的中文Alpaca
-- 🚀 开源了预训练脚本、指令精调脚本，用户可根据需要进一步训练模型
-- 🚀 快速使用笔记本电脑（个人PC）的CPU/GPU本地量化和部署体验大模型
-- 🚀 支持[🤗transformers](https://github.com/huggingface/transformers), [llama.cpp](https://github.com/ggerganov/llama.cpp), [text-generation-webui](https://github.com/oobabooga/text-generation-webui), [LlamaChat](https://github.com/alexrozanski/LlamaChat), [LangChain](https://github.com/hwchase17/langchain), [privateGPT](https://github.com/imartinez/privateGPT)等生态
-- 目前已开源的模型版本：7B（基础版、**Plus版**、**Pro版**）、13B（基础版、**Plus版**、**Pro版**）、33B（基础版、**Plus版**、**Pro版**）
+- 🚀 상당한 인코딩/디코딩 효율성을 갖춘 원본 LLaMA 위에 확장된 중국어 어휘
+- 🚀 중국어 LLaMA(범용) 및 Alpaca(명령 조정) 오픈 소스
+- 🚀 사용자 데이터의 추가 조정을 위한 사전 훈련 및 지침 미세 조정(SFT) 스크립트를 오픈 소스로 제공
+- 🚀 노트북(개인용 PC)의 CPU/GPU에서 대형 모델의 양자화된 버전을 빠르게 배포하고 경험해 보세요.
+- 🚀 [🤗transformers](https://github.com/huggingface/transformers), [llama.cpp](https://github.com/ggerganov/llama.cpp), [text- Generation-webui]( 지원 https://github.com/oobabooga/text- Generation-webui), [LlamaChat](https://github.com/alexrozanski/LlamaChat), [LangChain](https://github.com/hwchase17/langchain) , , [privateGPT](https://github.com/imartinez/privateGPT) 등
+- 출시 버전: 7B(기본, **Plus**, **Pro**), 13B(기본, **Plus**, **Pro**), 33B(기본, **Plus**, ** 찬성**)
 
-💡 下图是中文Alpaca-Plus-7B模型在本地CPU量化部署后的实际体验速度和效果。
+💡 다음 이미지는 로컬 배포 후 7B 버전 모델의 실제 경험 효과를 보여줍니다(애니메이션 가속 없음, Apple M1 Max에서 테스트).
 
 ![](./pics/screencast.gif)
 
 ----
 
-[**中文LLaMA-2&Alpaca-2大模型**](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2) | [多模态中文LLaMA&Alpaca大模型](https://github.com/airaria/Visual-Chinese-LLaMA-Alpaca) | [多模态VLE](https://github.com/iflytek/VLE) | [中文MiniRBT](https://github.com/iflytek/MiniRBT) | [中文LERT](https://github.com/ymcui/LERT) | [中英文PERT](https://github.com/ymcui/PERT) | [中文MacBERT](https://github.com/ymcui/MacBERT) | [中文ELECTRA](https://github.com/ymcui/Chinese-ELECTRA) | [中文XLNet](https://github.com/ymcui/Chinese-XLNet) | [中文BERT](https://github.com/ymcui/Chinese-BERT-wwm) | [知识蒸馏工具TextBrewer](https://github.com/airaria/TextBrewer) | [模型裁剪工具TextPruner](https://github.com/airaria/TextPruner)
+[**중국어-LLaMA-Alpaca-2**](https://github.com/ymcui/China-LLaMA-Alpaca-2)| [비주얼 중국어-LLaMA-Alpaca](https://github.com/airaria/Visual-English-LLaMA-Alpaca) | [멀티모달 VLE](https://github.com/iflytek/VLE) | [중국어 MiniRBT](https://github.com/iflytek/MiniRBT) | [중국어 LERT](https://github.com/ymcui/LERT) | [중국어-영어 PERT](https://github.com/ymcui/PERT) | [중국어 MacBERT](https://github.com/ymcui/MacBERT) | [중국어 ELECTRA](https://github.com/ymcui/China-ELECTRA) | [중국어 XLNet](https://github.com/ymcui/China-XLNet) | [중국어 BERT](https://github.com/ymcui/China-BERT-wwm) | [지식 증류 도구 TextBrewer](https://github.com/airaria/TextBrewer) | [모델 가지치기 도구 TextPruner](https://github.com/airaria/TextPruner)
 
-## 新闻
+## 소식
 
-**[2023/08/14] Chinese-LLaMA-Alpaca-2 v2.0版本已正式发布，开源Chinese-LLaMA-2-13B和Chinese-Alpaca-2-13B，推荐所有一期用户升级至二代模型，请参阅：https://github.com/ymcui/Chinese-LLaMA-Alpaca-2**
+**[2023년 8월 14일] Chinese-LLaMA-Alpaca-2 v2.0이 출시되었습니다. 우리는 Chinese-LLaMA-2-13B 및 Chinese-Alpaca-2-13B를 오픈 소스로 제공합니다. https://github.com/ymcui/China-LLaMA-Alpaca-2 참조**
 
-[2023/07/31] Chinese-LLaMA-Alpaca-2 v1.0版本已正式发布，请参阅：https://github.com/ymcui/Chinese-LLaMA-Alpaca-2
+[2023년 7월 19일] [릴리스 v5.0](https://github.com/ymcui/China-LLaMA-Alpaca/releases/tag/v5.0): Alpaca-Pro 모델을 출시하고 세대 품질을 크게 향상시킵니다. Plus-33B 모델과 함께.
 
-[2023/07/19] [v5.0版本](https://github.com/ymcui/Chinese-LLaMA-Alpaca/releases/tag/v5.0): 发布Alpaca-Pro系列模型，显著提升回复长度和质量；同时发布Plus-33B系列模型。
+[2023년 7월 19일] [중국어-LLaMA-Alpaca-2 프로젝트](https://github.com/ymcui/China-LLaMA-Alpaca-2)를 출시합니다.
 
-[2023/07/19] 🚀启动[中文LLaMA-2、Alpaca-2开源大模型项目](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2)，欢迎关注了解最新信息。
+[2023년 7월 10일] 베타 채널 미리보기, 향후 업데이트를 미리 알아보세요. [토론](https://github.com/ymcui/China-LLaMA-Alpaca/discussions/732) 보기
 
-[2023/07/10] Beta测试预览，提前了解即将到来的更新：详见[讨论区](https://github.com/ymcui/Chinese-LLaMA-Alpaca/discussions/732)
+[2023년 7월 7일] 중국-LLaMA-Alpaca 가족이 새로운 구성원을 환영합니다: 시각적 질문 답변을 위한 [비주얼 중국-LLaMA-Alpaca 모델](https://github.com/airaria/Visual-China-LLaMA-Alpaca) 그리고 채팅. 7B 테스트 버전을 사용할 수 있습니다.
 
-[2023/07/07] Chinese-LLaMA-Alpaca家族再添新成员，推出面向视觉问答与对话的[多模态中文LLaMA&Alpaca大模型](https://github.com/airaria/Visual-Chinese-LLaMA-Alpaca)，发布了7B测试版本。
+[2023년 6월 30일] llama.cpp를 통한 8K 컨텍스트 지원. [토론](https://github.com/ymcui/China-LLaMA-Alpaca/discussions/696)을 참조하세요. 변환기를 사용한 4K+ 컨텍스트 지원은 [PR#705](https://github.com/ymcui/China-LLaMA-Alpaca/pull/705)를 참조하세요.
 
-[2023/06/30] llama.cpp下8K context支持（无需对模型做出修改），相关方法和讨论见[讨论区](https://github.com/ymcui/Chinese-LLaMA-Alpaca/discussions/696)；transformers下支持4K+ context的代码请参考[PR#705](https://github.com/ymcui/Chinese-LLaMA-Alpaca/pull/705)
+[2023년 6월 16일] [릴리스 v4.1](https://github.com/ymcui/China-LLaMA-Alpaca/releases/tag/v4.1): 새로운 기술 보고서, C-Eval 추론 스크립트 추가, 추가 저자원 모델 병합 스크립트 등
 
-[2023/06/16] [v4.1版本](https://github.com/ymcui/Chinese-LLaMA-Alpaca/releases/tag/v4.1): 发布新版技术报告、添加C-Eval解码脚本、添加低资源模型合并脚本等。
+[2023년 6월 8일] [릴리스 v4.0](https://github.com/ymcui/China-LLaMA-Alpaca/releases/tag/v4.0): LLaMA/Alpaca 33B 버전을 사용할 수 있습니다. 또한 privateGPT 데모, C-Eval 결과 등도 추가합니다.
 
-[2023/06/08] [v4.0版本](https://github.com/ymcui/Chinese-LLaMA-Alpaca/releases/tag/v4.0): 发布中文LLaMA/Alpaca-33B、添加privateGPT使用示例、添加C-Eval结果等。
+## 콘텐츠 탐색
 
-## 内容导引
-| 章节                                  | 描述                                                         |
-| ------------------------------------- | ------------------------------------------------------------ |
-| [⏬模型下载](#模型下载)        | 中文LLaMA、Alpaca大模型下载地址                |
-| [🈴合并模型](#合并模型) | （重要）介绍如何将下载的LoRA模型与原版LLaMA合并 |
-| [💻本地推理与快速部署](#本地推理与快速部署) | 介绍了如何对模型进行量化并使用个人电脑部署并体验大模型 |
-| [💯系统效果](#系统效果) | 介绍了部分场景和任务下的使用体验效果             |
-| [📝训练细节](#训练细节) | 介绍了中文LLaMA、Alpaca大模型的训练细节 |
-| [❓FAQ](#FAQ) | 一些常见问题的回复 |
-| [⚠️局限性](#局限性) | 本项目涉及模型的局限性 |
+| 장 | 설명 |
+| -------------------------------- | ------------------------------------- ---------- |
+| [다운로드](#모델-다운로드) | 중국어 LLaMA 및 Alpaca 링크 다운로드 |
+| [모델 재구성](#Model-Reconstruction) | (중요) 다운로드한 LoRA 모델을 원본 LLaMA와 병합하는 방법을 설명합니다 |
+| [빠른 배포](#빠른 배포) | 개인용 컴퓨터에서 LLM을 양자화하고 배포하는 단계 |
+| [결과 예](#System-Performance) | 시스템 출력의 예 |
+| [교육 세부정보](#Training-Details) | 중국어 LLaMA, 알파카 교육 내용 소개 |
+| [FAQ](#FAQ) | 몇 가지 일반적인 질문에 대한 답변 |
+| [제한사항](#Limitations) | 이 프로젝트에 관련된 모델의 한계 |
 
+## 모델 다운로드
 
-## 模型下载
+### ⚠️ 사용자 공지(필독)
 
-### 用户须知（必读）
+공식 [Facebook에서 출시한 LLaMA 모델은 상업적 사용을 금지](https://github.com/facebookresearch/llama)하고 공식 모델 가중치는 오픈 소스로 제공되지 않았습니다(온라인에서 사용할 수 있는 타사 다운로드 링크가 많이 있음). . 관련 라이센스를 준수하기 위해 현재 전체 모델 중량을 공개하는 것은 불가능합니다. 이해해 주셔서 감사합니다. Facebook이 모델 가중치를 완전히 공개한 후 이 프로젝트는 이에 따라 정책을 업데이트합니다. **여기서 공개되는 것은 LoRA 가중치**인데, 이는 원래 LLaMA 모델의 "패치"로 볼 수 있으며, 이 두 가지를 병합하면 완전한 가중치를 얻을 수 있습니다.
 
-Facebook官方发布的[LLaMA模型禁止商用](https://github.com/facebookresearch/llama)，并且官方没有正式开源模型权重（虽然网上已经有很多第三方的下载地址）。为了遵循相应的许可，**这里发布的是LoRA权重**，可以理解为原LLaMA模型上的一个“补丁”，两者合并即可获得完整版权重。以下中文LLaMA/Alpaca LoRA模型无法单独使用，需要搭配[原版LLaMA模型](https://github.com/facebookresearch/llama)。请参考本项目给出的[合并模型](#合并模型)步骤重构模型。
+### 모델 개요
 
-### 模型列表
-
-下图展示了本项目以及[二期项目](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2)推出的所有大模型之间的关系。
+다음 그림은 우리 프로젝트([2세대 프로젝트](https://github.com/ymcui/China-LLaMA-Alpaca-2) 포함)의 모든 오픈 소스 모델을 보여줍니다.
 
 ![](./pics/models.png)
 
-### 模型选择指引
+### 어떤 모델을 사용해야 하나요?
 
-下面是中文LLaMA和Alpaca模型的基本对比以及建议使用场景（包括但不限于），更多内容见[训练细节](#训练细节)。
+다음 표는 중국 LLaMA 및 Alpaca 모델의 기본 비교와 권장 사용 시나리오(포함하되 이에 국한되지 않음)를 제공합니다.
 
-| 对比项                | 中文LLaMA                                              | 中文Alpaca                                                   |
-| :-------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| 训练方式              | 传统CLM                            | 指令精调                                                     |
-| 模型类型 | 基座模型 | 指令理解模型（类ChatGPT） |
-| 训练语料 | 无标注通用语料 | 有标注指令数据 |
-| 词表大小<sup>[3]</sup> | 4995**3** | 4995**4**=49953+1（pad token） |
-| 输入模板              | 不需要                                                 | 需要符合模板要求<sup>[1]</sup> |
-| 适用场景 ✔️            | 文本续写：给定上文内容，让模型生成下文            | 指令理解（问答、写作、建议等）；多轮上下文理解（聊天等） |
-| 不适用场景 ❌          | 指令理解 、多轮聊天等                                  |  文本无限制自由生成                                                       |
-| llama.cpp             | 使用`-p`参数指定上文                                   | 使用`-ins`参数启动指令理解+聊天模式                          |
-| text-generation-webui |  不适合chat模式                              |    使用`--cpu`可在无显卡形式下运行                                                          |
-| LlamaChat             | 加载模型时选择"LLaMA"                                  | 加载模型时选择"Alpaca"                                       |
-| [HF推理代码](./scripts/inference/inference_hf.py) | 无需添加额外启动参数 | 启动时添加参数 `--with_prompt`        |
-| [web-demo代码](./scripts/inference/gradio_demo.py) | 不适用 | 直接提供Alpaca模型位置即可；支持多轮对话 |
-| [LangChain示例](./scripts/langchain) / privateGPT | 不适用 | 直接提供Alpaca模型位置即可 |
-| 已知问题              | 如果不控制终止，则会一直写下去，直到达到输出长度上限。<sup>[2]</sup> | 请使用Pro版，以避免Plus版回复过短的问题。 |
+💡 **플러스 버전**은 더 많은 데이터에 대해 교육을 받았으므로 사용을 적극 권장합니다.
 
-*[1] llama.cpp/LlamaChat/[HF推理代码](./scripts/inference/inference_hf.py)/[web-demo代码](./scripts/inference/gradio_demo.py)/[LangChain示例](./scripts/langchain)等已内嵌，无需手动添加模板。*<br/>
-*[2] 如果出现模型回答质量特别低、胡言乱语、不理解问题等情况，请检查是否使用了正确的模型和启动参数。*<br/>
-*[3] 经过指令精调的Alpaca会比LLaMA多一个pad token，**因此请勿混用LLaMA/Alpaca词表**。*
+| 비교항목 | 중국어 LLaMA | 중국 알파카 |
+| ------------------------------------- ---- | ------------------------------------- ---------- | ------------------------------------- ---------- |
+| 훈련방법 | 기존 CLM(일반 코퍼스 교육) | 명령어 미세 조정(명령 데이터 학습) |
+| 모델 유형 | 기본 모델 | 지시 따르기 모델(예: ChatGPT) |
+| 훈련 데이터 | 감독되지 않은 자유 텍스트 | 지도 명령 데이터 |
+| 어휘 크기<sup>[3]</sup> | 4995**3** | 4995**4**=49953+1(패드 토큰) |
+| 입력 템플릿 | 필요하지 않음 | 템플릿 요구 사항을 충족해야 합니다<sup>[1]</sup> |
+| 적합한 시나리오 ✔️ | 텍스트 연속: 컨텍스트가 주어지면 모델이 계속 쓰기 | 1. 수업이해(Q&A, 글쓰기, 조언 등)<br/>2. 다단계 상황 파악(채팅 등) |
+| 부적합한 시나리오 ❌ | 지시사항 이해, 다단계 채팅 등 | 무제한 무료 텍스트 생성 |
+| 라마.cpp | `-p` 매개변수를 사용하여 컨텍스트를 지정 | '-ins' 매개변수를 사용하여 명령어 이해 + 채팅 모드 활성화 |
+| 텍스트 생성-webui | 채팅 모드에 적합하지 않음 | GPU 없이 실행하려면 `--cpu`를 사용하세요. 생성된 콘텐츠가 만족스럽지 않으면 프롬프트 수정을 고려하세요 |
+| 라마채팅 | 모델을 로드할 때 "LLaMA"를 선택하세요 | 모델을 로드할 때 "Alpaca"를 선택하세요 |
+| [inference_hf.py](./scripts/inference/inference_hf.py) | 추가 시작 매개변수가 필요하지 않습니다 | 시작할 때 `--with_prompt` 매개변수 추가 |
+| [웹 데모](./scripts/inference/gradio_demo.py) | 해당 없음 | 간단히 알파카 모델 위치를 제공하세요. 다단계 대화 지원 |
+| [LangChain-데모](./scripts/langchain) / privateGPT | 해당 없음 | 간단히 알파카 모델 위치를 제공하세요 |
+| 알려진 문제 | 종료를 제어하지 않으면 출력 길이 제한에 도달할 때까지 쓰기를 계속합니다.<sup>[2]</sup> | 짧은 응답을 피하기 위해 Pro 모델을 사용하십시오(Plus 시리즈). |
 
-### 推荐模型下载
+*[1] 템플릿은 (llama.cpp/LlamaChat/[inference_hf.py](./scripts/inference/inference_hf.py)/[web-demo](./scripts/inference/gradio_demo.py)에 내장되어 있습니다. /[LangChain-demo](./scripts/langchain).*
 
-以下为本项目推荐使用的模型列表，通常使用了更多的训练数据和优化的模型训练方法和参数，请优先使用这些模型（其余模型请查看[其他模型](#其他模型)）。**如希望体验类ChatGPT对话交互，请使用Alpaca模型，而不是LLaMA模型。** 对于Alpaca模型，Pro版针对回复内容过短的问题进行改进，模型回复效果有明显提升；如果更偏好短回复，请选择Plus系列。
+*[2] 낮은 품질의 모델 응답, 무의미한 답변, 질문 이해 실패 등의 문제가 발생하는 경우 해당 시나리오에 올바른 모델 및 시작 매개변수를 사용하고 있는지 확인하세요.*
 
-| 模型名称                  |   类型   | 训练数据 |                   重构模型<sup>[1]</sup>                   | 大小<sup>[2]</sup> |                    LoRA下载<sup>[3]</sup>                    |
-| :------------------------ | :------: | :------: | :--------------------------------------------------------: | :----------------: | :----------------------------------------------------------: |
-| Chinese-LLaMA-Plus-7B  | 基座模型 | 通用120G |        原版LLaMA-7B         |        790M        | [[百度网盘]](https://pan.baidu.com/s/1zvyX9FN-WSRDdrtMARxxfw?pwd=2gtr)</br>[[Google Drive]](https://drive.google.com/file/d/1N97m3rBj-rp-J1X8rgRfluyomEscfAq0/view?usp=sharing) |
-| Chinese-LLaMA-Plus-13B | 基座模型 | 通用120G |        原版LLaMA-13B        |        1.0G        | [[百度网盘]](https://pan.baidu.com/s/1VGpNlrLx5zHuNzLOcTG-xw?pwd=8cvd)<br/>[[Google Drive]](https://drive.google.com/file/d/1q0L5Me_1j_9iiRRNfuEFUt3SOjQo3-g3/view?usp=share_link) |
-| Chinese-LLaMA-Plus-33B 🆕 | 基座模型 | 通用120G | 原版LLaMA-33B | 1.3G<sup>[6]</sup> | [[百度网盘]](https://pan.baidu.com/s/1v2WsSA0RFyVfy7FXY9A2NA?pwd=n8ws)<br/>[[Google Drive]](https://drive.google.com/file/d/1S4pBPiIZo7fXqf8hjnFaeE7Z-yZFEta9/view?usp=share_link) |
-| Chinese-Alpaca-Pro-7B 🆕 | 指令模型 | 指令4.3M | *原版LLaMA-7B &<br/>LLaMA-Plus-7B*<sup>[4]</sup> | 1.1G | [[百度网盘]](https://pan.baidu.com/s/1M7whRwG5DRRkzRXCH4aF3g?pwd=fqpd)<br/>[[Google Drive]](https://drive.google.com/file/d/1yfIJ2IXymaTaJ8l7VMnb5LnvQFx3idh-/view?usp=share_link) |
-| Chinese-Alpaca-Pro-13B 🆕 | 指令模型 | 指令4.3M | *原版LLaMA-13B &<br/>LLaMA-Plus-13B<sup>[4]</sup>* | 1.3G | [[百度网盘]](https://pan.baidu.com/s/1ok5Iiou-MovZa7bFLvt4uA?pwd=m79g)<br/>[[Google Drive]](https://drive.google.com/file/d/1IY8PzMje1LM2bIgnniArnmmE8qYaJV_I/view?usp=share_link) |
-| Chinese-Alpaca-Pro-33B 🆕 | 指令模型 | 指令4.3M | *原版LLaMA-33B &<br/>LLaMA-Plus-33B<sup>[4]</sup>* | 2.1G | [[百度网盘]](https://pan.baidu.com/s/1u2TWZcsG_PZSTnmuu7vwww?pwd=8zj8)<br/>[[Google Drive]](https://drive.google.com/file/d/14sFEhRq9c-p8S_TiVYNBnmPr4hk-nhs-/view?usp=share_link) |
-
-*[1] 重构需要原版LLaMA模型，[去LLaMA项目申请使用](https://github.com/facebookresearch/llama)或参考这个[PR](https://github.com/facebookresearch/llama/pull/73/files)。因版权问题本项目无法提供下载链接。*<br/>
-*[2] 经过重构后的模型大小比同等量级的原版LLaMA大一些（主要因为扩充了词表）。*<br/>
-*[3] 下载后务必检查压缩包中模型文件的SHA256是否一致，请查看[SHA256.md](./SHA256.md)。*<br/>
-*[4] Alpaca-Plus模型需要同时下载对应的LLaMA-Plus模型，请参考[合并教程](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/手动模型合并与转换#多lora权重合并适用于chinese-alpaca-plus)。*<br/>
-*[5] 有些地方称为30B，实际上是Facebook在发布模型时写错了，论文里仍然写的是33B。*<br/>*[6] 采用FP16存储，故模型体积较小。*
-
-压缩包内文件目录如下（以Chinese-LLaMA-7B为例）：
-
-```
-chinese_llama_lora_7b/
-  - adapter_config.json		# LoRA权重配置文件
-  - adapter_model.bin		# LoRA权重文件
-  - special_tokens_map.json	# special_tokens_map文件
-  - tokenizer_config.json	# tokenizer配置文件
-  - tokenizer.model		# tokenizer文件 
-```
+*[3] 알파카 모델에는 LLaMA보다 어휘력에 추가 패드 토큰이 있습니다. **LLaMA/Alpaca 토크나이저를 혼합하지 마십시오**.*
 
 
-### 其他模型下载
+### 추천 모델
 
-由于训练方式和训练数据等因素影响，**以下模型已不再推荐使用（特定场景下可能仍然有用）**，请优先使用上一节中的[推荐模型](#推荐下载模型)。
+다음은 이 프로젝트에 권장되는 모델 목록입니다. 이러한 모델은 일반적으로 더 많은 학습 데이터와 최적화된 모델 학습 방법 및 매개 변수를 사용하므로 우선적으로 사용해야 합니다(다른 모델의 경우 [Other Models](#Other-Models)를 확인하세요). **ChatGPT와 같은 상호 작용을 경험하고 싶다면 LLaMA 모델 대신 Alpaca 모델을 사용하세요.** Alpaca 모델의 경우 더 긴 응답을 위해 Pro 버전을 사용하세요. 더 짧은 응답을 원하시면 대신 Plus 시리즈를 사용하십시오.
 
-| 模型名称          |   类型   | 训练数据 | 重构模型 | 大小 |                    LoRA下载                    |
-| :---------------- | :------: | :------: | :--------------------: | :----------------: | :----------------------------------------------------------: |
-| Chinese-LLaMA-7B  | 基座模型 | 通用20G  |      原版LLaMA-7B      |        770M        | [[百度网盘]](https://pan.baidu.com/s/1oORTdpr2TvlkxjpyWtb5Sw?pwd=33hb)</br>[[Google Drive]](https://drive.google.com/file/d/1iQp9T-BHjBjIrFWXq_kIm_cyNmpvv5WN/view?usp=sharing) |
-| Chinese-LLaMA-13B | 基座模型 | 通用20G  |     原版LLaMA-13B      |        1.0G        | [[百度网盘]](https://pan.baidu.com/s/1BxFhYhDMipW7LwI58cGmQQ?pwd=ef3t)<br/>[[Google Drive]](https://drive.google.com/file/d/12q9EH4mfKRnoKlbkkhzv1xDwWnroo9VS/view?usp=sharing) |
-| Chinese-LLaMA-33B | 基座模型 | 通用20G | 原版LLaMA-33B | 2.7G | [[百度网盘]](https://pan.baidu.com/s/1-ylGyeM70QZ5vbEug5RD-A?pwd=hp6f)<br/>[[Google Drive]](https://drive.google.com/file/d/1NwsLYbuEByUxre5GqTN5EkxiuZSRxUy_/view?usp=share_link) |
-| Chinese-Alpaca-7B         | 指令模型 |  指令2M  |                        原版LLaMA-7B                        |        790M        | [[百度网盘]](https://pan.baidu.com/s/1xV1UXjh1EPrPtXg6WyG7XQ?pwd=923e)</br>[[Google Drive]](https://drive.google.com/file/d/1JvFhBpekYiueWiUL3AF1TtaWDb3clY5D/view?usp=sharing) |
-| Chinese-Alpaca-13B        | 指令模型 |  指令3M  |                       原版LLaMA-13B                        |        1.1G        | [[百度网盘]](https://pan.baidu.com/s/1wYoSF58SnU9k0Lndd5VEYg?pwd=mm8i)<br/>[[Google Drive]](https://drive.google.com/file/d/1gzMc0xMCpXsXmU1uxFlgQ8VRnWNtDjD8/view?usp=share_link) |
-| Chinese-Alpaca-33B | 指令模型 | 指令4.3M | 原版LLaMA-33B | 2.8G | [[百度网盘]](https://pan.baidu.com/s/1fey7lGMMw3GT982l8uJYMg?pwd=2f2s)<br/>[[Google Drive]](https://drive.google.com/file/d/1YeSgnZWaRkKdmYa-JHiIlcvqhrDd4-Y4/view?usp=share_link) |
-| Chinese-Alpaca-Plus-7B  | 指令模型 |  指令4M  |  *原版LLaMA-7B &<br/>LLaMA-Plus-7B*  |        1.1G        | [[百度网盘]](https://pan.baidu.com/s/12tjjxmDWwLBM8Tj_7FAjHg?pwd=32hc)</br>[[Google Drive]](https://drive.google.com/file/d/1EDcTmq6tDmRxqarpapdyDGBE9opY0zrB/view?usp=share_link) |
-| Chinese-Alpaca-Plus-13B | 指令模型 | 指令4.3M | *原版LLaMA-13B &<br/>LLaMA-Plus-13B* |        1.3G        | [[百度网盘]](https://pan.baidu.com/s/1Mew4EjBlejWBBB6_WW6vig?pwd=mf5w)<br/> [[Google Drive]](https://drive.google.com/file/d/1CcLJvY7XsFAOjfSIqCpDI7jf3EEPDcEF/view?usp=share_link) |
-| Chinese-Alpaca-Plus-33B | 指令模型 | 指令4.3M | *原版LLaMA-33B &<br/>LLaMA-Plus-33B* | 2.1G | [[百度网盘]](https://pan.baidu.com/s/1j2prOjiQGB8S5x67Uj8XZw?pwd=3pac)<br/>[[Google Drive]](https://drive.google.com/file/d/1YUaT-NOReoF-z1vzj2khwYKdj4Z_ekbO/view?usp=share_link) |
+| 모델 | 유형 | 데이터 | 필수 원본 모델<sup>[1]</sup> | 크기<sup>[2]</sup> | 다운로드 링크<sup>[3]</sup> |
+| :--------- | :------------: | :---------------: | :------------------------------------------------- ---: | :----------------: | :------------------------------------------------- ---------: |
+| 중국어-LLaMA-Plus-7B | 기본 모델 | 일반 120G | LLaMA-7B | 790M | [[BaiduDisk]](https://pan.baidu.com/s/1zvyX9FN-WSRDdrtMARxxfw?pwd=2gtr)</br>[[Google 드라이브]](https://drive.google.com/file/d /1N97m3rBj-rp-J1X8rgRfluyomEscfAq0/view?usp=sharing) |
+| 중국어-LLaMA-Plus-13B | 기본 모델 | 일반 120G | LLaMA-13B | 1.0G | [[BaiduDisk]](https://pan.baidu.com/s/1VGpNlrLx5zHuNzLOcTG-xw?pwd=8cvd)<br/>[[Google 드라이브]](https://drive.google.com/file/d /1q0L5Me_1j_9iiRRNfuEFUt3SOjQo3-g3/view?usp=share_link) |
+| 중국어-LLaMA-Plus-33B 🆕 | 기본 모델 | 일반 120G | LLaMA-33B | 1.3G<sup>[6]</sup> | [[BaiduDisk]](https://pan.baidu.com/s/1v2WsSA0RFyVfy7FXY9A2NA?pwd=n8ws)<br/>[[Google 드라이브]](https://drive.google.com/file/d/1S4pBPiIZo7fXqf8hjnFaeE7Z -yZFEta9/view?usp=share_link) |
+| 중국어-알파카-Pro-7B 🆕 | 지시 따르기 모델 | 명령 4.3M | *LLaMA-7B 및<br/>LLaMA-Plus-7B*<sup>[4]</sup> | 1.1G | [[BaiduDisk]](https://pan.baidu.com/s/1M7whRwG5DRRkzRXCH4aF3g?pwd=fqpd)<br/>[[Google 드라이브]](https://drive.google.com/file/d/1yfIJ2IXymaTaJ8l7VMnb5LnvQFx3idh -/view?usp=share_link) |
+| 중국어-알파카-Pro-13B 🆕 | 지시 따르기 모델 | 명령 4.3M | *LLaMA-13B 및<br/>LLaMA-Plus-13B<sup>[4]</sup>* | 1.3G | [[BaiduDisk]](https://pan.baidu.com/s/1ok5Iiou-MovZa7bFLvt4uA?pwd=m79g)<br/>[[Google 드라이브]](https://drive.google.com/file/d /1IY8PzMje1LM2bIgnniArnmmE8qYaJV_I/view?usp=share_link) |
+| 중국어-알파카-Pro-33B 🆕 | 지시 따르기 모델 | 명령 4.3M | *LLaMA-33B 및<br/>LLaMA-Plus-33B<sup>[4]</sup>* | 2.1G | [[BaiduDisk]](https://pan.baidu.com/s/1u2TWZcsG_PZSTnmuu7vwww?pwd=8zj8)<br/>[[Google 드라이브]](https://drive.google.com/file/d/14sFEhRq9c -p8S_TiVYNBnmPr4hk-nhs-/view?usp=share_link) |
 
-### 🤗transformers调用
+**[1]** [Facebook-LLaMA](https://github.com/facebookresearch/llama)에서 사용하려면 원본 LLaMA 모델을 적용하거나 이 [PR](https://github. com/facebookresearch/llama/pull/73/files). 본 프로젝트는 저작권 문제로 인해 다운로드를 제공할 수 없으니 양해 부탁드립니다.
 
-可以在🤗Model Hub下载以上所有模型，并且使用[transformers](https://github.com/huggingface/transformers)和[PEFT](https://github.com/huggingface/peft)调用中文LLaMA或Alpaca LoRA模型。以下模型调用名称指的是使用`.from_pretrained()`中指定的模型名称。
+**[2]** 재구성된 모델은 원래 LLaMA보다 약간 더 큽니다(어휘 확장으로 인해). 7B 모델은 약 13G+입니다.
 
-- Pro版命名（只有Alpaca）：`ziqingyang/chinese-alpaca-pro-lora-${model_size}`
+**[3]** 다운로드 후 ZIP 파일의 SHA256이 일치하는지 확인하세요. 전체 값은 [SHA256.md](./SHA256.md)를 참조하세요.
 
-- Plus版命名：`ziqingyang/chinese-${model_name}-plus-lora-${model_size}`
+**[4]** Alpaca-Plus의 병합 단계는 다른 것과 다릅니다. [wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Manual-Conversion#multiple-lora)를 참조하세요. -가중치 병합 적용 가능-중국어-알파카-플러스).
 
-- 基础版命名：`ziqingyang/chinese-${model_name}-lora-${model_size}`
-- `$model_name`：`llama`或者`alpaca`；`$model_size`：`7b`, `13b`, `33b`
+**[5]** 다른 곳에서는 30B 모델이라고도 합니다. Facebook에서 이 모델을 출시할 때 이름 지정 오타가 있었습니다. 우리는 여기서 원래의 종이 명명 규칙(및 실제 무게 수)을 고수합니다.
 
-- 举例：Chinese-LLaMA-Plus-33B模型对应的调用名称是`ziqingyang/chinese-llama-plus-lora-33b`
+**[6]** FP16에 저장됩니다.
 
-详细清单与模型下载地址：https://huggingface.co/ziqingyang
+ZIP 파일 내의 파일 디렉터리는 다음과 같습니다(예: Chinese-LLaMA 사용).
 
-## 合并模型
+````
+Chinese_llama_lora_7b/
+  -adapter_config.json # LoRA 가중치 구성 파일
+  -adapter_model.bin # LoRA 가중치 파일
+  -special_tokens_map.json #special_tokens_map 파일
+  - tokenizer_config.json # 토크나이저 구성 파일
+  - tokenizer.model # 토크나이저 파일
+````
 
-前面提到LoRA模型无法单独使用，必须与原版LLaMA进行合并才能转为完整模型，以便进行模型推理、量化或者进一步训练。请选择以下方法对模型进行转换合并。
+### 기타 모델
 
-| 方式         | 适用场景                                                   |                             教程                             |
-| :----------- | :--------------------------------------------------------- | :----------------------------------------------------------: |
-| **在线转换** | Colab用户可利用本项目提供的notebook进行在线转换并量化模型  | [链接](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/在线模型合并与转换) |
-| **手动转换** | 离线方式转换，生成不同格式的模型，以便进行量化或进一步精调 | [链接](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/手动模型合并与转换) |
+학습 방법 및 학습 데이터와 같은 요인으로 인해 **아래 모델은 더 이상 권장되지 않습니다(특정 시나리오에서는 여전히 유용할 수 있음)**. 이전 항목의 [추천모델](#Recommended-Models)을 우선적으로 활용하시기 바랍니다.
 
-以下是合并模型后，FP16精度和4-bit量化后的大小，转换前确保本机有足够的内存和磁盘空间（最低要求）：
+| 모델 | 유형 | 데이터 | 필수 원본 모델<sup>[1]</sup> | 크기<sup>[2]</sup> | 다운로드 링크<sup>[3]</sup> |
+| :----------------- | :------------: | :------------: | :----------------------: | :----------------: | :------------------------------------------------- ---------: |
+| 중국어-LLaMA-7B | 기본 모델 | 일반 20G | LLaMA-7B | 7억 7천만 | [[BaiduDisk]](https://pan.baidu.com/s/1oORTdpr2TvlkxjpyWtb5Sw?pwd=33hb)</br>[[Google 드라이브]](https://drive.google.com/file/d/1iQp9T -BHjBjIrFWXq_kIm_cyNmpvv5WN/view?usp=공유) |
+| 중국어-LLaMA-13B | 기본 모델 | 일반 20G | LLaMA-13B | 1.0G | [[BaiduDisk]](https://pan.baidu.com/s/1BxFhYhDMipW7LwI58cGmQQ?pwd=ef3t)<br/>[[Google 드라이브]](https://drive.google.com/file/d/12q9EH4mfKRnoKlbkkhzv1xDwWnroo9VS /view?usp=공유) |
+| 중국어-LLaMA-33B | 기본 모델 | 일반 20G | LLaMA-33B | 2.7G | [[BaiduDisk]](https://pan.baidu.com/s/1-ylGyeM70QZ5vbEug5RD-A?pwd=hp6f)<br/>[[Google 드라이브]](https://drive.google.com/file /d/1NwsLYbuEByUxre5GqTN5EkxiuZSRxUy_/view?usp=share_link) |
+| 중국어-알파카-7B | 지시추종모델 | 지시 2M | LLaMA-7B | 790M | [[BaiduDisk]](https://pan.baidu.com/s/1xV1UXjh1EPrPtXg6WyG7XQ?pwd=923e)</br>[[Google 드라이브]](https://drive.google.com/file/d/1JvFhBpekYiueWiUL3AF1TtaWDb3clY5D /view?usp=공유) |
+| 중국어-알파카-13B | 지시추종모델 | 교육 3M | LLaMA-13B | 1.1G | [[BaiduDisk]](https://pan.baidu.com/s/1wYoSF58SnU9k0Lndd5VEYg?pwd=mm8i)<br/>[[Google 드라이브]](https://drive.google.com/file/d/1gzMc0xMCpXsXmU1uxFlgQ8VRnWNtDjD8 /view?usp=share_link) |
+| 중국어-알파카-33B | 지시추종모델 | 명령 4.3M | LLaMA-33B | 2.8G | [[BaiduDisk]](https://pan.baidu.com/s/1fey7lGMMw3GT982l8uJYMg?pwd=2f2s)<br/>[[Google 드라이브]](https://drive.google.com/file/d/1YeSgnZWaRkKdmYa -JHiIlcvqhrDd4-Y4/view?usp=share_link) |
+| 중국어-알파카-Plus-7B | 지시추종모델 | 지시 4M | *LLaMA-7B 및<br/>LLaMA-Plus-7B* | 1.1G | [[BaiduDisk]](https://pan.baidu.com/s/12tjjxmDWwLBM8Tj_7FAjHg?pwd=32hc)</br>[[Google 드라이브]](https://drive.google.com/file/d/1EDcTmq6tDmRxqarpapdyDGBE9opY0zrB /view?usp=share_link) |
+| 중국어-알파카-플러스-13B | 지시추종모델 | 명령 4.3M | *LLaMA-13B 및<br/>LLaMA-Plus-13B* | 1.3G | [[BaiduDisk]](https://pan.baidu.com/s/1Mew4EjBlejWBBB6_WW6vig?pwd=mf5w)<br/> [[Google 드라이브]](https://drive.google.com/file/d/1CcLJvY7XsFAOjfSIqCpDI7jf3EEPDcEF /view?usp=share_link) |
+| 차이니즈-알파카-플러스-33B | 지시추종모델 | 명령 4.3M | *LLaMA-33B 및<br/>LLaMA-Plus-33B* | 2.1G | [[BaiduDisk]](https://pan.baidu.com/s/1j2prOjiQGB8S5x67Uj8XZw?pwd=3pac)<br/>[[Google 드라이브]](https://drive.google.com/file/d/1YUaT -NOReoF-z1vzj2khwYKdj4Z_ekbO/view?usp=share_link) |
 
-| 模型版本            |   7B   |   13B   |   33B   |   65B   |
-| :------------------ | :----: | :-----: | :-----: | :-----: |
-| 原模型大小（FP16）  | 13 GB  |  24 GB  |  60 GB  | 120 GB  |
-| 量化后大小（8-bit） | 7.8 GB | 14.9 GB | 32.4 GB | ~60 GB  |
-| 量化后大小（4-bit） | 3.9 GB | 7.8 GB  | 17.2 GB | 38.5 GB |
+### 🤗트랜스포머와 함께 사용하세요
 
-具体内容请参考本项目 >>> [📚 GitHub Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/模型合并与转换)
+위 모델을 모두 🤗Model Hub에서 다운로드하고 [transformers](https://github.com/huggingface/transformers) 및 [PEFT](https://github.com/huggingface/peft)와 함께 사용하여 호출할 수 있습니다. 중국 LLaMA 또는 Alpaca LoRA 모델. 아래에 언급된 모델 호출 이름은 `.from_pretrained()`에 지정된 모델 이름입니다.
 
-## 本地推理与快速部署
+- Pro 버전 이름 지정(Alpaca만 해당): `ziqingyang/chinese-alpaca-pro-lora-${model_size}`
 
-本项目中的模型主要支持以下量化、推理和部署方式。
+- 플러스 버전 이름: `ziqingyang/chinese-${model_name}-plus-lora-${model_size}`
 
-| 推理和部署方式                                               | 特点                                         | 平台  | CPU  | GPU  | 量化加载 | 图形界面 |                             教程                             |
-| :----------------------------------------------------------- | -------------------------------------------- | :---: | :--: | :--: | :------: | :------: | :----------------------------------------------------------: |
-| [**llama.cpp**](https://github.com/ggerganov/llama.cpp)      | 丰富的量化选项和高效本地推理                 | 通用  |  ✅   |  ✅   |    ✅     |    ❌     | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/llama.cpp量化部署) |
-| [**🤗Transformers**](https://github.com/huggingface/transformers) | 原生transformers推理接口                    | 通用  |  ✅   |  ✅   |    ✅     |    ✅     | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/使用Transformers推理) |
-| [**text-generation-webui**](https://github.com/oobabooga/text-generation-webui) | 前端Web UI界面的部署方式                     | 通用  |  ✅   |  ✅   |    ✅     |    ✅     | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/使用text-generation-webui搭建界面) |
-| [**LlamaChat**](https://github.com/alexrozanski/LlamaChat)   | macOS下的图形交互界面 | MacOS |  ✅   |  ❌   |    ✅     |    ✅     | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/使用LlamaChat图形界面（macOS）) |
-| [**LangChain**](https://github.com/hwchase17/langchain)      | LLM应用开发框架，适用于进行二次开发          | 通用  | ✅<sup>†</sup> |  ✅   | ✅<sup>†</sup> |    ❌     | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/与LangChain进行集成) |
-| [**privateGPT**](https://github.com/imartinez/privateGPT) | 基于LangChain的多文档本地问答框架 | 通用 | ✅ | ✅ | ✅ | ❌ | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/使用privateGPT进行多文档问答) |
-| [**Colab Gradio Demo**](https://github.com/ymcui/Chinese-LLaMA-Alpaca/blob/main/notebooks/gradio_web_demo.ipynb) | Colab中启动基于Gradio的交互式Web服务 | 通用 | ✅ | ✅ | ✅ | ❌ | [link](https://colab.research.google.com/github/ymcui/Chinese-LLaMA-Alpaca/blob/main/notebooks/gradio_web_demo.ipynb) |
-| [**API调用**](https://platform.openai.com/docs/api-reference) | 仿OpenAI API接口的服务器Demo | 通用 | ✅ | ✅ | ✅ | ❌ | [link](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/API调用) |
+- 기본 버전 이름: `ziqingyang/chinese-${model_name}-lora-${model_size}`
+- `$model_name`: `llama` 또는 `alpaca`; `$model_size`: `7b`, `13b`, `33b`
 
-<sup>†</sup>: LangChain框架支持，但教程中未实现；详细说明请参考LangChain官方文档。
+- 예: Chinese-LLaMA-Plus-33B 모델의 호출 이름은 'ziqingyang/chinese-llama-plus-lora-33b'입니다.
 
-具体内容请参考本项目 >>> [📚 GitHub Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/模型推理与部署)
+상세 목록 및 모델 다운로드 링크: https://huggingface.co/ziqingyang
 
-## 系统效果
+## 모델 재구성
 
-### 生成效果评测
+추가 조정이나 추론을 위해 LoRA 모델을 원본 LLaMA와 병합하기 위해 현재 두 가지 방법이 제공됩니다.
 
-为了快速评测相关模型的实际文本生成表现，本项目在给定相同的prompt的情况下，在一些常见任务上对比测试了本项目的中文Alpaca-7B、中文Alpaca-13B、中文Alpaca-33B、中文Alpaca-Plus-7B、中文Alpaca-Plus-13B的效果。生成回复具有随机性，受解码超参、随机种子等因素影响。以下相关评测并非绝对严谨，测试结果仅供晾晒参考，欢迎自行体验。
+| 방법 | 사용법 | 튜토리얼 |
+| :--------- | :------------------------------------------------- ---------- | :------------------------------------------------- ---------: |
+| **온라인 변환** | Google Colab 사용자에게 적합하며 온라인 변환 및 모델 양자화를 위해 노트북을 사용할 수 있습니다. | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Online-conversion-with-Colab) |
+| **수동 변환** | 오프라인 변환에 적합하며 양자화 또는 추가 미세 조정을 위해 다양한 형식으로 모델을 생성합니다. | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Manual-Conversion) |
 
-- 详细评测结果及生成样例请查看[examples目录](./examples)
-- 📊 Alpaca模型在线对战：[http://chinese-alpaca-arena.ymcui.com](http://chinese-alpaca-arena.ymcui.com/)
+다음은 각 원본 모델의 크기와 4비트 양자화이다. 해당 모델을 변환할 때 머신에 충분한 메모리와 디스크 공간이 있는지 확인하십시오(최소 요구 사항).
 
-### 客观效果评测
+| | 7B | 13B | 33B | 65B |
+| :----------------- | :----: | :------: | :------: | :------: |
+| 원본(FP16) | 13GB | 24GB | 60GB | 120GB |
+| 양자화(8비트) | 7.8GB | 14.9GB | 32.4GB | ~60GB |
+| 양자화(4비트) | 3.9GB | 7.8GB | 17.2GB | 38.5GB |
 
-本项目还在“NLU”类客观评测集合上对相关模型进行了测试。这类评测的结果不具有主观性，只需要输出给定标签（需要设计标签mapping策略），因此可以从另外一个侧面了解大模型的能力。本项目在近期推出的[C-Eval评测数据集](https://cevalbenchmark.com)上测试了相关模型效果，其中测试集包含12.3K个选择题，涵盖52个学科。以下是部分模型的valid和test集评测结果（Average），完整结果请参考[技术报告](https://arxiv.org/abs/2304.08177)。
+관련 문서는 프로젝트의 >>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Model-Reconstruction)로 이동되었습니다.
 
-| 模型                    | Valid (zero-shot) | Valid (5-shot) | Test (zero-shot) | Test (5-shot) |
-| ----------------------- | :---------------: | :------------: | :--------------: | :-----------: |
-| Chinese-Alpaca-Plus-33B |       46.5        |      46.3      |       44.9       |     43.5      |
-| Chinese-Alpaca-33B      |       43.3        |      42.6      |       41.6       |     40.4      |
-| Chinese-Alpaca-Plus-13B |       43.3        |      42.4      |       41.5       |     39.9      |
-| Chinese-Alpaca-Plus-7B  |       36.7        |      32.9      |       36.4       |     32.3      |
-| Chinese-LLaMA-Plus-33B  |       37.4        |      40.0      |       35.7       |     38.3      |
-| Chinese-LLaMA-33B       |       34.9        |      38.4      |       34.6       |     39.5      |
-| Chinese-LLaMA-Plus-13B  |       27.3        |      34.0      |       27.8       |     33.3      |
-| Chinese-LLaMA-Plus-7B   |       27.3        |      28.3      |       26.9       |     28.4      |
+## 빠른 배포
 
-需要注意的是，综合评估大模型能力仍然是亟待解决的重要课题，合理辩证地看待大模型相关各种评测结果有助于大模型技术的良性发展。推荐用户在自己关注的任务上进行测试，选择适配相关任务的模型。
+추론 및 로컬 배포를 위해 주로 다음 세 가지 방법을 제공합니다.
 
-C-Eval推理代码请参考本项目 >>> [📚 GitHub Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/C-Eval评测结果与脚本)
-
-## 训练细节
-
-整个训练流程包括词表扩充、预训练和指令精调三部分。
-
-- 本项目的模型均在原LLaMA词表的基础上扩充了中文单词，代码请参考[merge_tokenizers.py](./scripts/merge_tokenizer/merge_tokenizers.py)
-- 预训练和指令精调代码参考了🤗transformers中的[run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_clm.py)和[Stanford Alpaca](https://github.com/tatsu-lab/stanford_alpaca)项目中数据集处理的相关部分
-- 已开源用于预训练和指令精调的训练脚本：[预训练脚本Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/预训练脚本)、[指令精调脚本Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/指令精调脚本)
+| 방법 | 특징 | 플랫폼 | CPU | GPU | 양자화 | UI | 튜토리얼 |
+| :------------------------------------------------- ---------- | ------------------------------------- ---------- | :------: | :--: | :--: | :----------: | :--: | :------------------------------------------------- ---------: |
+| [**llama.cpp**](https://github.com/ggerganov/llama.cpp) | 모델을 양자화하고 로컬 CPU에 배포하기 위한 도구 | 일반 | ✅ | ✅ | ✅ | ❌ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/llama.cpp-Deployment) |
+| [**🤗Transformers**](https://github.com/huggingface/transformers) | 원래 변환기 추론 방법, CPU/GPU 지원 | 일반 | ✅ | ✅ | ✅ | ✅ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Inference-with-Transformers) |
+| [**텍스트 생성-webui**](https://github.com/oobabooga/text- Generation-webui) | 모델을 웹 UI로 배포하기 위한 도구 | 일반 | ✅ | ✅ | ✅ | ✅ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/text- Generation-webui) |
+| [**LlamaChat**](https://github.com/alexrozanski/LlamaChat) | LLaMA, Alpaca 등과 채팅할 수 있는 macOS 앱 | 맥OS | ✅ | ❌ | ✅ | ✅ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Using-LlamaChat-Interface) |
+| [**LangChain**](https://github.com/hwchase17/langchain) | 2차 개발에 적합한 LLM 애플리케이션 개발 프레임워크 | 일반 | ✅<sup>†</sup> | ✅ | ✅<sup>†</sup> | ❌ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Integrated-with-LangChain) |
+| [**privateGPT**](https://github.com/imartinez/privateGPT) | LangChain 기반 다중 문서 QA 프레임워크 | 일반 | ✅ | ✅ | ✅ | ❌ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Use-privateGPT-for-multi-document-QA) |
+| [**Colab Gradio 데모**](https://github.com/ymcui/China-LLaMA-Alpaca/blob/main/notebooks/gradio_web_demo.ipynb) | Colab에서 Gradio 웹 데모 실행 | 일반 | ✅ | ✅ | ✅ | ❌ | [링크](https://colab.research.google.com/github/ymcui/China-LLaMA-Alpaca/blob/main/notebooks/gradio_web_demo.ipynb) |
+| [**API 호출**](https://platform.openai.com/docs/api-reference) | OPENAI API를 구현하는 서버 | 일반 | ✅ | ✅ | ✅ | ❌ | [링크](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/API-Calls) |
 
 
-具体内容请参考本项目 >>> [📚 GitHub Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/训练细节)
+<sup>†</sup>: LangChain에서 지원되지만 튜토리얼에서는 구현되지 않습니다. 자세한 내용은 공식 LangChain 문서를 참조하세요.
 
-## FAQ
+관련 문서는 프로젝트 >>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Model-Inference-and-Deployment)로 이동되었습니다.
 
-FAQ中给出了常见问题的解答，请在提Issue前务必先查看FAQ。
+## 시스템 성능
 
-```
-问题1：为什么不能放出完整版本权重？
-问题2：后面会有33B、65B的版本吗？
-问题3：一些任务上效果不好！
-问题4：为什么要扩充词表？直接在原版LLaMA上用中文预训练不行吗？
-问题5：回复内容很短
-问题6：Windows下，模型无法理解中文、生成速度很慢等问题
-问题7：Chinese-LLaMA 13B模型没法用llama.cpp启动，提示维度不一致
-问题8：Chinese-Alpaca-Plus效果很差
-问题9：模型在NLU类任务（文本分类等）上效果不好
-问题10：为什么叫33B，不应该是30B吗？
-问题11：模型合并之后SHA256不一致
-```
+### 세대 성능 테스트
 
-具体问题和解答请参考本项目 >>> [📚 GitHub Wiki](https://github.com/ymcui/Chinese-LLaMA-Alpaca/wiki/常见问题)
+관련 모델의 실제 성능을 신속하게 평가하기 위해 이 프로젝트에서는 동일한 주어진 몇 가지 공통 작업에 대해 중국산 Alpaca-7B, Alpaca-13B, Alpaca-Plus-7B, Alpaca-Plus-13B 및 Alpaca-33B의 효과를 비교했습니다. 즉각적인. 응답 생성은 무작위이며 하이퍼파라미터 디코딩 및 무작위 시드와 같은 요인의 영향을 받습니다. 다음 관련 평가는 절대적으로 엄격한 것은 아니며 테스트 결과는 참고용일 뿐입니다. 직접 경험해 보시기 바랍니다.
+
+- 자세한 평가 결과는 [예시](./examples)를 참고하세요.
+- 📊 알파카 챗봇 아레나: [http://chinese-alpaca-arena.ymcui.com](http://chinese-alpaca-arena.ymcui.com/)
+
+### NLU 성능 테스트
+
+이 프로젝트는 또한 "NLU" 객관적 평가 데이터 세트를 사용하여 관련 모델에 대한 테스트를 수행했습니다. 이러한 유형의 평가 결과는 객관적이며 지정된 레이블의 출력만 필요하므로 다른 관점에서 대규모 모델의 기능에 대한 통찰력을 제공할 수 있습니다. 최근 출시된 [C-Eval 데이터 세트](https://cevalbenchmark.com/)에서 이 프로젝트는 관련 모델의 성능을 테스트했습니다. 테스트 세트에는 52개 주제를 다루는 12.3K개의 객관식 문제가 포함되어 있습니다. 다음은 검증 세트와 테스트 세트에 대한 일부 모델의 평가 결과(평균)입니다. 전체 결과를 보려면 [기술 보고서](https://arxiv.org/abs/2304.08177)를 참조하세요.
+
+| 모델 | 유효(제로샷) | 유효(5발) | 테스트(제로샷) | 테스트(5샷) |
+| ---------- | :---------------: | :------------: | :---------------: | :------------: |
+| 차이니즈-알파카-플러스-33B | 46.5 | 46.3 | 44.9 | 43.5 |
+| 중국어-알파카-33B | 43.3 | 42.6 | 41.6 | 40.4 |
+| 중국어-알파카-플러스-13B | 43.3 | 42.4 | 41.5 | 39.9 |
+| 중국어-알파카-Plus-7B | 36.7 | 32.9 | 36.4 | 32.3 |
+| 중국어-LLaMA-Plus-33B | 37.4 | 40.0 | 35.7 | 38.3 |
+| 중국어-LLaMA-33B | 34.9 | 38.4 | 34.6 | 39.5 |
+| 중국어-LLaMA-Plus-13B | 27.3 | 34.0 | 27.8 | 33.3 |
+| 중국어-LLaMA-Plus-7B | 27.3 | 28.3 | 26.9 | 28.4 |
+
+대형 모델의 성능에 대한 종합적인 평가는 여전히 시급하고 다루어야 할 중요한 주제라는 점을 기억하는 것이 중요합니다. 대형모델 기술의 건전한 발전을 도모하기 위해서는 대형모델의 다양한 평가 결과를 합리적이고 균형 있게 접근하는 것이 유익하다. 사용자가 자신의 작업에 대해 테스트를 수행하고 해당 작업에 적합한 모델을 선택하는 것이 좋습니다.
+
+C-Eval 추론 코드는 >>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/C-Eval-performance-and-script)를 참조하세요.
+
+## 교육 세부정보
+
+전체 교육 과정은 어휘 확장, 사전 교육, 교육 미세 조정의 세 부분으로 구성됩니다. 어휘 확장은 [merge_tokenizers.py](scripts/merge_tokenizer/merge_tokenizers.py)를 참조하세요. 🤗transformers의 [run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/언어-modeling/run_clm.py) 및 [Stanford의 데이터 세트 처리 관련 부분을 참조하세요. Alpaca](https://github.com/tatsu-lab/stanford_alpaca) 사전 훈련 및 자가 지시 미세 조정을 위한 프로젝트입니다.
+
+우리는 사전 훈련 및 지침 미세 조정(SFT)을 위한 스크립트를 오픈 소스로 제공했습니다.
+
+- 사전 훈련: [scripts/training/run_clm_pt_with_peft.py](./scripts/training/run_clm_pt_with_peft.py), [사전 훈련 위키](https://github.com/ymcui/ Chinese-LLaMA-Alpaca)를 참조하세요. /wiki/사전 훈련 스크립트)
+
+- 지침 미세 조정: [scripts/training/run_clm_sft_with_peft.py](./scripts/training/run_clm_sft_with_peft.py), [SFT Wiki](https://github.com/ymcui/ Chinese-LLaMA-Alpaca/wiki/ 참조) SFT 스크립트)
+
+>>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/Training-Details)를 참조하세요.
 
 
-## 局限性
+## 자주하는 질문
 
-虽然本项目中的模型具备一定的中文理解和生成能力，但也存在局限性，包括但不限于：
+FAQ는 자주 묻는 질문에 대한 답변을 제공합니다. 문제를 제출하기 전에 FAQ를 참조하세요.
 
-- 可能会产生不可预测的有害内容以及不符合人类偏好和价值观的内容
-- 由于算力和数据问题，相关模型的训练并不充分，中文理解能力有待进一步提升
-- 暂时没有在线可互动的demo（注：用户仍然可以自行在本地部署）
+````
+Q1: 전체 모델 가중치를 공개할 수 없는 이유는 무엇입니까?
+Q2: 앞으로 33B, 65B 버전이 나올 예정인가요?
+Q3: 모델이 일부 작업에서 제대로 작동하지 않습니다!
+Q4: 왜 어휘를 확장하나요? 원래 LLaMA를 중국 데이터로 사전 훈련할 수는 없나요?
+Q5: 답변이 너무 짧습니다.
+Q6: Windows에서는 모델이 중국어를 이해하지 못하거나 생성 속도가 매우 느린 등의 현상이 발생합니다.
+Q7: 중국-LLaMA 13B 모델은 llama.cpp를 사용하여 시작할 수 없으며 크기가 일치하지 않는다고 보고됩니다.
+Q8: 차이니즈-알파카-플러스는 다른 것보다 좋은 성능을 보이지 않습니다.
+Q9: 모델은 텍스트 분류와 같은 NLU 작업에서 제대로 작동하지 않습니다.
+Q10: 왜 30B가 아니고 33B인가요?
+Q11: 일관성 없는 SHA256
+````
 
+>>> [📚GitHub Wiki](https://github.com/ymcui/China-LLaMA-Alpaca/wiki/FAQ)를 참조하세요.
 
-## 引用
+## 제한사항
 
-如果您觉得本项目对您的研究有所帮助或使用了本项目的代码或数据，请参考引用本项目的技术报告：https://arxiv.org/abs/2304.08177
-```
-@article{chinese-llama-alpaca,
-      title={Efficient and Effective Text Encoding for Chinese LLaMA and Alpaca}, 
-      author={Cui, Yiming and Yang, Ziqing and Yao, Xin},
-      journal={arXiv preprint arXiv:2304.08177},
-      url={https://arxiv.org/abs/2304.08177},
-      year={2023}
+본 프로젝트의 모델은 원래 LLaMA 및 Alpaca에 비해 중국어 이해 및 생성 능력이 크게 향상되었지만 다음과 같은 제한 사항도 있습니다.
+
+- 예측할 수 없는 유해한 내용 및 인간의 취향과 가치관에 부합하지 않는 내용을 생산할 수 있습니다.
+- 컴퓨팅 파워 및 데이터 문제로 인해 관련 모델의 학습이 충분하지 않아 중국어 이해력을 더욱 향상시킬 필요가 있음.
+- 현재 사용할 수 있는 온라인 대화형 데모가 없습니다(참고: 사용자는 여전히 로컬로 직접 배포할 수 있습니다).
+
+## 인용
+
+우리 프로젝트의 모델, 데이터, 코드가 유용하다고 생각되면 다음과 같이 우리 작업을 인용하는 것을 고려해 보십시오: https://arxiv.org/abs/2304.08177
+
+````
+@article{중국-라마-알파카,
+      title={중국어 LLaMA 및 Alpaca를 위한 효율적이고 효과적인 텍스트 인코딩},
+      작성자={Cui, Yiming 및 Yang, Ziqing 및 Yao, Xin},
+      저널={arXiv 사전 인쇄 arXiv:2304.08177},
+      URL={https://arxiv.org/abs/2304.08177},
+      연도={2023}
 }
-```
+````
+
+## 관련 프로젝트
+
+| 프로젝트 이름 | 설명 | 유형 |
+| :------------------------------------------------- ---------- | :------------------------- | :---------: |
+| [**중국어-LLaMA-Alpaca-2**](https://github.com/ymcui/China-LLaMA-Alpaca-2)(공식) | 중국어 LLaMA-2, Alpaca-2 LLM | 텍스트 |
+| [**Visual-China-LLaMA-Alpaca**](https://github.com/airaria/Visual-China-LLaMA-Alpaca)(공식) | 다중 모드 중국어 LLaMA 및 알파카 LLM | 다중 모드 |
+
+이 목록에 참여하고 싶나요? >>> [여기에서 신청하세요](https://github.com/ymcui/China-LLaMA-Alpaca/discussions/740)
 
 
-## 相关项目
+## 감사의 말씀
 
-| 项目名称                                                     | 简介                           |  类型  |
-| :----------------------------------------------------------- | :----------------------------- | :----: |
-| [**Chinese-LLaMA-Alpaca-2**](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2)（官方项目） | 中文LLaMA-2、Alpaca-2大模型    |  文本  |
-| [**Visual-Chinese-LLaMA-Alpaca**](https://github.com/airaria/Visual-Chinese-LLaMA-Alpaca)（官方项目） | 多模态中文LLaMA & Alpaca大模型 | 多模态 |
+본 프로젝트는 2차 개발을 위한 다음의 오픈소스 프로젝트를 기반으로 진행되며, 관련 프로젝트와 연구개발 인력 여러분께 감사의 말씀을 드립니다.
 
-想要加入列表？>>> [提交申请](https://github.com/ymcui/Chinese-LLaMA-Alpaca/discussions/740)
+| 기초 모델, 코드 | 양자화, 추론, 배포 | 데이터 |
+| :------------------------------------------------- ---------: | :------------------------------------------------- ---------: | :------------------------------------------------- ---------: |
+| [Facebook의 LLaMA](https://github.com/facebookresearch/llama)<br/>[Stanford의 Alpaca](https://github.com/tatsu-lab/stanford_alpaca)<br/>[alpaca-lora by @tloen](https://github.com/tloen/alpaca-lora) | [@ggerganov의 llama.cpp](https://github.com/ggerganov/llama.cpp)<br/>[@alexrozanski의 LlamaChat]( https://github.com/alexrozanski/LlamaChat)<br/> [@oobabooga의 텍스트 생성-webui](https://github.com/oobabooga/text- Generation-webui) | [@brightmart의 pCLUE 및 번역 데이터](https://github.com/brightmart/nlp_chinese_corpus)<br/>[OpenAssistant의 oasst1](https://huggingface.co/datasets/OpenAssistant/oasst1) |
 
-## 致谢
+에피소드: 현재 로고는 DALL·E 플러그인을 사용하여 GPT-4에 의해 자동으로 생성됩니다(이전에는 midjourney에서 생성됨).
 
-本项目基于以下开源项目二次开发，在此对相关项目和研究开发人员表示感谢。
+## 면책조항
 
-|                        基础模型、代码                        |                       量化、推理、部署                       |                             数据                             |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| [LLaMA by Facebook](https://github.com/facebookresearch/llama)<br/>[Alpaca by Stanford](https://github.com/tatsu-lab/stanford_alpaca)<br/>[alpaca-lora by @tloen](https://github.com/tloen/alpaca-lora) | [llama.cpp by @ggerganov](https://github.com/ggerganov/llama.cpp)<br/>[LlamaChat by @alexrozanski]( https://github.com/alexrozanski/LlamaChat)<br/>[text-generation-webui by @oobabooga](https://github.com/oobabooga/text-generation-webui) | [pCLUE and MT data by @brightmart](https://github.com/brightmart/nlp_chinese_corpus)<br/>[oasst1 by OpenAssistant](https://huggingface.co/datasets/OpenAssistant/oasst1) |
+**본 프로젝트와 관련된 리소스는 학술 연구 목적으로만 사용되며 상업적인 사용은 엄격히 금지됩니다.** 타사 코드가 포함된 부분을 사용할 경우 해당 오픈 소스 계약을 엄격히 따르십시오. 모델에 의해 생성된 콘텐츠는 모델 계산, 무작위성, 양자화 정확도 손실 등의 요인에 의해 영향을 받습니다. 본 프로젝트는 정확성을 보장할 수 없습니다. 모델에 의해 출력된 콘텐츠에 대해 본 프로젝트는 법적 책임을 지지 않으며, 관련 리소스 사용 및 출력 결과로 인해 발생할 수 있는 손실에 대해 책임을 지지 않습니다.
 
-## 免责声明
+이 프로젝트는 개인과 협력자가 여가 시간에 시작하고 유지 관리하므로 관련 문제 해결에 대한 시기적절한 대응을 보장할 수 없습니다.
 
-**本项目相关资源仅供学术研究之用，严禁用于商业用途。** 使用涉及第三方代码的部分时，请严格遵循相应的开源协议。模型生成的内容受模型计算、随机性和量化精度损失等因素影响，本项目不对其准确性作出保证。对于模型输出的任何内容，本项目不承担任何法律责任，亦不对因使用相关资源和输出结果而可能产生的任何损失承担责任。本项目由个人及协作者业余时间发起并维护，因此无法保证能及时回复解决相应问题。
+## 피드백
 
+질문이 있으시면 GitHub 이슈에 제출해 주세요.
 
-## 问题反馈
-如有问题，请在GitHub Issue中提交。礼貌地提出问题，构建和谐的讨论社区。
-
-- 在提交问题之前，请先查看FAQ能否解决问题，同时建议查阅以往的issue是否能解决你的问题。
-- 提交问题请使用本项目设置的Issue模板，以帮助快速定位具体问题。
-- 重复以及与本项目无关的issue会被[stable-bot](https://github.com/marketplace/stale)处理，敬请谅解。
+- 질문을 제출하기 전에 FAQ가 문제를 해결할 수 있는지 확인하고, 과거 문제를 상담하여 도움이 될 수 있는지 확인하세요.
+- 제출 시 전용 이슈 템플릿을 사용하시기 바랍니다.
+- 중복되고 관련되지 않은 문제는 [stable-bot](https://github.com/marketplace/stale)에서 처리됩니다. 이해해주세요.
+- 정중하게 질문을 제기하고, 조화로운 토론 커뮤니티를 구축할 수 있도록 도와주세요.
